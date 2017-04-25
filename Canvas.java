@@ -8,7 +8,7 @@ public class Canvas {
     private Pixel[][] canvas; // Drawing Canvas
     private Pixel[][] save; // Save State
     private Matrix edges; // Lines
-    private Matrix transform; // Transformation Matrix
+    private Stack<Matrix> transform; // Transformation Matrix
     private int x, y; // Dimensions
     private int mode; // Edges or Polygons
     
@@ -19,7 +19,7 @@ public class Canvas {
 	y = 500;
 	fill(255, 255, 255);
 	edges = new Matrix();
-	transform = Matrix.identity(4);
+	transform = new Stack<Matrix>;
 	mode = 2;
     }
     public Canvas(int md) {
@@ -32,7 +32,7 @@ public class Canvas {
 	this.y = y;
 	fill(255, 255, 255);
 	edges = new Matrix();
-	transform = Matrix.identity(4);
+	transform = new Stack<Matrix>;
 	mode = 2;
     }
     public Canvas(int x, int y, int md) {
@@ -84,25 +84,28 @@ public class Canvas {
 
     // Transformations
     public Matrix scale(double sx, double sy, double sz) {
+	if (transform.empty()) return null;
 	Matrix left = Matrix.identity(4);
 	left.set(0,0,sx);
 	left.set(1,1,sy);
 	left.set(2,2,sz);
-	transform = left.multiply(transform);
-	return transform;
+	transform.push(left.multiply(transform.pop));
+	return transform.peek();
     }
     public Matrix scale(double s) {
 	return scale(s, s, s);
     }
     public Matrix translate(double dx, double dy, double dz) {
+	if (transform.empty()) return null;
 	Matrix left = Matrix.identity(4);
 	left.set(0,3,dx);
 	left.set(1,3,dy);
 	left.set(2,3,dz);
-	transform = left.multiply(transform);
-	return transform;
+	transform.push(left.multiply(transform.pop));
+	return transform.peek();
     }
     public Matrix rotate(char axis, double theta) {
+	if (transform.empty()) return null;
 	Matrix left = Matrix.identity(4);
 	double rad = Math.toRadians(theta);
 	if (axis == 'z') {
@@ -123,13 +126,28 @@ public class Canvas {
 	    left.set(1,2,-1 * Math.sin(rad));
 	    left.set(2,1,Math.sin(rad));
 	}
-	transform = left.multiply(transform);
-	return transform;
+	transform.push(left.multiply(transform.pop));
+	return transform.peek();
     }
+
+    public Matrix push() {
+	Matrix m = Matrix.identity(4);
+	if (!transform.empty())
+	    m.copy(transform.peek());
+	return transform.push(m);
+    }
+    public Matrix pop() {
+	if (!transform.empty())
+	    return transform.pop(m);
+	return null;
+    }
+
+    // Deprecated
     public Matrix apply() {
-	edges.copy(transform.multiply(edges));
-	transform = Matrix.identity(4);
-	return edges;
+	return null;
+	// edges.copy(transform.multiply(edges));
+	// transform = Matrix.identity(4);
+	// return edges;
     }
 
     // Shapes and Curves
