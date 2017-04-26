@@ -17,7 +17,7 @@ public class Picture {
 		
 		// Processing
 		if (cmd.equals("line")) {
-		    c.edge(sc.nextDouble(), sc.nextDouble(), sc.nextDouble(),
+		    c.line(sc.nextDouble(), sc.nextDouble(), sc.nextDouble(),
 			   sc.nextDouble(), sc.nextDouble(), sc.nextDouble(), color);
 		} else if (cmd.equals("bezier")) {
 		    c.bezier(sc.nextDouble(), sc.nextDouble(), sc.nextDouble(), sc.nextDouble(),
@@ -37,6 +37,10 @@ public class Picture {
 			    sc.nextDouble(), sc.nextDouble(), color);
 		} else if (cmd.equals("color")) {
 		    color = new Pixel(sc.nextInt(), sc.nextInt(), sc.nextInt());
+		} else if (cmd.equals("push")) {
+		    c.push();
+		} else if (cmd.equals("pop")) {
+		    c.pop();
 		} else if (cmd.equals("scale")) {
 		    c.scale(sc.nextDouble(), sc.nextDouble(), sc.nextDouble());
 		} else if (cmd.equals("move")) {
