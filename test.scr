@@ -24,5 +24,22 @@ circle
 line
 0 0 0 30 40 0
 
+move 
+10 10 0
+scale 
+2 2 2
+
+push 
+
+hermite
+0 0 200 200
+100 0 0 100
+
+bezier 
+50 50 
+100 100
+150 0
+200 100
+
 save 
 out.ppm

@@ -185,6 +185,8 @@ public class Canvas {
 		       double dx, double dy, double dz, Pixel p) {
 	Matrix em = box_edges(x,y,z,dx,dy,dz,p);
 	edges.append(em);
+	apply();
+	draw(3);
 	return true;
     }
     public boolean box(double x, double y, double z, 
@@ -238,6 +240,8 @@ public class Canvas {
     public boolean sphere(double cx, double cy, double cz, double r, Pixel p) {
 	Matrix em = sphere_edges(cx,cy,cz,r,p);
 	edges.append(em);
+	apply();
+	draw(3);
 	return true;
     }
     public boolean sphere(double cx, double cy, double cz, double r) {
@@ -305,6 +309,8 @@ public class Canvas {
     public boolean torus(double cx, double cy, double cz, double r, double R, Pixel p) {
 	Matrix em = torus_edges(cx,cy,cz,r,R,p);
 	edges.append(em);
+	apply();
+	draw(3);
 	return true;
     }
     public boolean torus(double cx, double cy, double cz, double r, double R) {
@@ -401,6 +407,8 @@ public class Canvas {
 	    edge(x, y, 0, newx, newy, 0, p);
 	    x = newx; y = newy;
 	}
+	apply();
+	draw(2);
 	return true;
     }
     public boolean hermite(double x0, double y0, double x1, double y1,
@@ -449,6 +457,8 @@ public class Canvas {
 	    edge(x, y, 0, newx, newy, 0, p);
 	    x = newx; y = newy;
 	}
+	apply();
+	draw(2);
 	return true;
     }
     public boolean bezier(double x0, double y0,
