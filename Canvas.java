@@ -141,6 +141,12 @@ public class Canvas {
 	    return transform.pop();
 	return null;
     }
+    public Matrix peek() {
+	Matrix m = Matrix.identity(4);
+	if (!transform.empty()) 
+	    m.copy(transform.peek());
+	return m;
+    }
 
     public Matrix apply() {
 	Matrix top = Matrix.identity(4);
@@ -184,7 +190,7 @@ public class Canvas {
     public boolean box(double x, double y, double z, 
 		       double dx, double dy, double dz, Pixel p) {
 	Matrix em = box_edges(x,y,z,dx,dy,dz,p);
-	edges.append(em);
+	edges.append(em);	
 	apply();
 	draw(3);
 	return true;
@@ -592,7 +598,7 @@ public class Canvas {
 	}
 	return true;
     }
-    public boolean load() {
+    public boolean loadstate() {
 	if (save != null) {
 	    for (int i = 0; i < y; i++) 
 		for (int j = 0; j < x; j++) 

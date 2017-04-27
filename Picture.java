@@ -57,17 +57,58 @@ public class Picture {
 		    c.draw();
 		} else if (cmd.equals("save")) {
 		    c.save(sc.next());
+		} else if (cmd.equals("savestate")) {
+		    c.savestate();
+		} else if (cmd.equals("loadstate")) {
+		    c.loadstate();
 		} else if (cmd.equals("mode")) {
 		    c.setMode(sc.nextInt());
 		} else if (cmd.equals("reset")) {
 		    c = new Canvas(sc.nextInt(), sc.nextInt(),
 				   sc.nextInt(), sc.nextInt(), sc.nextInt());
 		}
+		
+		// Debugging Tools
+		else if (cmd.equals("--show-transform")) {
+		    System.out.println(c.getTransform());
+		}
+		else if (cmd.equals("--show-edges")) {
+		    System.out.println(c.getEdges());
+		}
+		else if (cmd.equals("--show-mode")) {
+		    System.out.println(c.getMode());
+		}
 	    }
 	    return;
 	} 
-
+	
 	// Polygons ===========================
+	Canvas c = new Canvas(500, 500, 255, 255, 255, 3);
+	Pixel p = new Pixel(0,0,0);
+	
+	int frame = 0;
+	c.savestate(); // Background
+	c.push(); 
+	c.rotate('y', -45);
+	c.rotate('x', 30);
+	c.translate(250,100,0);
+
+	for (int sum = 0; sum <= 200; sum += 50) {
+	    for (int i = sum; i >= 0; i -= 50) {
+		c.box(i,sum,i-sum,50,50,50);
+		if (Math.random() < 0.5) {
+		    c.sphere(i,50+sum,i-sum,25);
+		} else {
+		    c.torus(i,50+sum,i-sum,5,40);
+		}
+	    }
+	}
+	
+	c.draw();
+	c.save("out.ppm");
+	// ==================================== */
+
+	/* // Polygons ===========================
 	Canvas c = new Canvas(500, 500, 255, 255, 255, 3);
 	Pixel p = new Pixel(0,0,0);
 	
@@ -104,7 +145,7 @@ public class Picture {
 	//    	buffer = "0" + buffer;
 	//     c.draw();
 	//     c.save(buffer + ".ppm");
-	//     c.load();
+	//     c.loadstate();
 
 	//     frame++;
 	//     c.translate(-250,-250,0);
@@ -113,7 +154,6 @@ public class Picture {
 	//     c.apply();
 	// }
 	// ==================================== */
-
 
 	/* // Curves  ============================
 	Canvas c = new Canvas(500, 500, 0, 40, 60);
@@ -145,7 +185,7 @@ public class Picture {
 
 	// GIF
 	// for (int r = 0; r < 360; r += 3) {
-	//     c.load();
+	//     c.loadstate();
 	//     frame++;
 
 	//     String buffer = "" + frame;
@@ -282,7 +322,7 @@ public class Picture {
 	   // c.translate(-250, -250, -250);
 	   // c.apply();
 
-	   // c.load();
+	   // c.loadstate();
 	   // frame++;
 	   // } // End Animation Loop
 
